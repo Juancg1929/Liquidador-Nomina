@@ -25,43 +25,86 @@ from src.model.datos_nomina import DatosNomina
 class LiquidadorNominaApp(App):
     
     def build(self):
-        contenedor = GridLayout(cols=2, padding=20, spacing=20)
+        from kivy.uix.boxlayout import BoxLayout
+        
+        # Contenedor principal con scroll
+        contenedor_principal = BoxLayout(orientation='vertical', padding=20, spacing=15)
+        
+        # Título
+        titulo = Label(
+            text="LIQUIDADOR DE NÓMINA",
+            font_size=32,
+            bold=True,
+            size_hint_y=None,
+            height=50
+        )
+        contenedor_principal.add_widget(titulo)
+        
+        # Bienvenida
+        bienvenida = Label(
+            text="Bienvenido al sistema de cálculo de liquidación de nómina",
+            font_size=14,
+            size_hint_y=None,
+            height=30
+        )
+        contenedor_principal.add_widget(bienvenida)
+        
+        # Descripción
+        descripcion = Label(
+            text="Ingrese los datos del empleado para calcular el salario neto\n"
+                 "considerando deducciones de salud y pensión",
+            font_size=12,
+            size_hint_y=None,
+            height=50,
+            text_size=(500, None)
+        )
+        contenedor_principal.add_widget(descripcion)
+        
+        # Separador visual
+        separador = Label(text="", size_hint_y=None, height=10)
+        contenedor_principal.add_widget(separador)
+        
+        # Grid para los campos de entrada
+        contenedor = GridLayout(cols=2, padding=10, spacing=15, size_hint_y=None, height=350)
         
         # Salario básico
-        contenedor.add_widget(Label(text="Salario básico"))
-        self.salario = TextInput(font_size=30)
+        contenedor.add_widget(Label(text="Salario básico", size_hint_x=0.4))
+        self.salario = TextInput(font_size=20, multiline=False)
         contenedor.add_widget(self.salario)
         
         # Días trabajados
-        contenedor.add_widget(Label(text="Días trabajados"))
-        self.dias = TextInput(font_size=30)
+        contenedor.add_widget(Label(text="Días trabajados", size_hint_x=0.4))
+        self.dias = TextInput(font_size=20, multiline=False)
         contenedor.add_widget(self.dias)
         
         # Bonificación
-        contenedor.add_widget(Label(text="Bonificación"))
-        self.bonificacion = TextInput(font_size=30)
+        contenedor.add_widget(Label(text="Bonificación", size_hint_x=0.4))
+        self.bonificacion = TextInput(font_size=20, multiline=False)
         contenedor.add_widget(self.bonificacion)
         
         # Comisión
-        contenedor.add_widget(Label(text="Comisión"))
-        self.comision = TextInput(font_size=30)
+        contenedor.add_widget(Label(text="Comisión", size_hint_x=0.4))
+        self.comision = TextInput(font_size=20, multiline=False)
         contenedor.add_widget(self.comision)
         
         # Otros descuentos
-        contenedor.add_widget(Label(text="Otros descuentos"))
-        self.descuentos = TextInput(font_size=30)
+        contenedor.add_widget(Label(text="Otros descuentos", size_hint_x=0.4))
+        self.descuentos = TextInput(font_size=20, multiline=False)
         contenedor.add_widget(self.descuentos)
         
-        # Resultado
-        self.resultado = Label(text="", font_size=20)
-        contenedor.add_widget(self.resultado)
+        # Agregar el grid de campos al contenedor principal
+        contenedor_principal.add_widget(contenedor)
         
         # Botón calcular
-        calcular = Button(text="Calcular", font_size=40)
+        calcular = Button(text="Calcular", font_size=30, size_hint_y=None, height=60)
         calcular.bind(on_press=self.calcular_liquidacion)
-        contenedor.add_widget(calcular)
+        contenedor_principal.add_widget(calcular)
         
-        return contenedor
+        # Resultado
+        self.resultado = Label(text="", font_size=18, size_hint_y=None, height=80)
+        contenedor_principal.add_widget(self.resultado)
+        
+        return contenedor_principal
     
     def calcular_liquidacion(self, value):
         try:
@@ -108,6 +151,13 @@ class LiquidadorNominaApp(App):
         cerrar.bind(on_press=popup.dismiss)
         
         popup.open()
+
+
+if __name__ == "__main__":
+    app = LiquidadorNominaApp()
+    app.title = "Liquidador de Nómina"
+    app.run()
+
 
 
 if __name__ == "__main__":
